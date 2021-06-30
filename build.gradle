@@ -41,7 +41,7 @@ protobuf {
     }
 }
 
-// if you have source imports issues, add the below
+//  needed for imports to be valid in the classes, in case you are running in intellij;
 sourceSets.main.java.srcDir new File(buildDir, 'generated/source')
 idea {
     module {
