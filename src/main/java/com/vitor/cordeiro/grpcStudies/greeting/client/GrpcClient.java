@@ -1,9 +1,6 @@
 package com.vitor.cordeiro.grpcStudies.greeting.client;
 
-import com.proto.greet.GreetRequest;
-import com.proto.greet.GreetResponse;
-import com.proto.greet.GreetServiceGrpc;
-import com.proto.greet.Greeting;
+import com.proto.greet.*;
 import com.proto.sum.Sum;
 import com.proto.sum.SumRequest;
 import com.proto.sum.SumResponse;
@@ -26,9 +23,19 @@ public class GrpcClient {
 
         callGreet(greetClient);
         callSum(sumClient);
+        callGreetManyTimes(greetClient);
 
         System.out.println("Shutting down channel");
         channel.shutdown();
+    }
+
+    public static void callGreetManyTimes(GreetServiceGrpc.GreetServiceBlockingStub greetClient){
+        GreetManyTimesRequest request = GreetManyTimesRequest.newBuilder()
+                .setGreeting(Greeting.newBuilder().setFirstName("Fulano"))
+                .build();
+        greetClient.greetManyTimes(request).forEachRemaining(resp ->{
+            System.out.println("Response GREET MANY TIMES: " + resp.getResult());
+        });
     }
 
     public static void callGreet(GreetServiceGrpc.GreetServiceBlockingStub greetClient){
